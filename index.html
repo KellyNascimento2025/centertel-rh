@@ -1,27 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<!--
-    ========================================
-    PORTAL CENTERTEL RH
-    ========================================
-    
-    COMO ACESSAR O SISTEMA:
-    
-    1. BOTÃO VERDE "ACESSO RÁPIDO (DEMO)" - Clique para entrar instantaneamente
-    2. BOTÃO AZUL "ENTRAR" - As credenciais já estão preenchidas, só clicar
-    3. TECLA "D" - Pressione a tecla D no teclado para acesso rápido
-    4. CONSOLE - Digite quickLogin() no console do navegador
-    
-    Credenciais padrão:
-    E-mail: admin@centertel.com
-    Senha: admin123
-    
-    ========================================
--->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal CENTERTEL RH</title>
+    <title>Portal CENTERTEL RH 2.0</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -31,14 +13,19 @@
         }
 
         :root {
-            --primary: #2563eb;
+            --primary: #6366f1;
             --secondary: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --info: #3b82f6;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
             --gray: #6b7280;
-            --light-gray: #f9fafb;
+            --light-gray: #f3f4f6;
+            --dark: #1f2937;
             --border: #e5e7eb;
             --shadow: rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         }
 
         body {
@@ -48,22 +35,47 @@
             line-height: 1.6;
         }
 
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* Login Page */
         .login-container {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            background: var(--gradient);
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
         }
 
         .login-box {
             background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            animation: fadeIn 0.6s ease;
         }
 
         .login-header {
@@ -73,12 +85,11 @@
 
         .login-header h1 {
             color: var(--primary);
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
-        }
-
-        .login-header p {
-            color: var(--gray);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* Layout */
@@ -95,6 +106,8 @@
             left: 0;
             right: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .header-content {
@@ -110,55 +123,9 @@
             gap: 1rem;
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--primary);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .notifications {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--danger);
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .user-menu:hover {
-            background: var(--light-gray);
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .sidebar {
@@ -166,10 +133,11 @@
             left: 0;
             top: 70px;
             bottom: 0;
-            width: 250px;
+            width: 260px;
             background: white;
-            box-shadow: 1px 0 3px var(--shadow);
+            box-shadow: 2px 0 5px var(--shadow);
             overflow-y: auto;
+            transition: transform 0.3s ease;
         }
 
         .nav-menu {
@@ -180,55 +148,62 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 1.5rem;
             color: var(--gray);
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+            z-index: -1;
         }
 
         .nav-item:hover {
-            background: var(--light-gray);
             color: var(--primary);
+            transform: translateX(5px);
         }
 
         .nav-item.active {
-            background: rgba(37, 99, 235, 0.1);
-            color: var(--primary);
-            border-left: 3px solid var(--primary);
+            color: white;
+            font-weight: 600;
         }
 
-        .nav-item i {
-            width: 20px;
-            text-align: center;
+        .nav-item.active::before {
+            width: 100%;
         }
 
         .main-content {
-            margin-left: 250px;
+            margin-left: 260px;
             margin-top: 70px;
             padding: 2rem;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .page-title {
-            font-size: 1.875rem;
-            font-weight: bold;
-            color: #111827;
+            animation: fadeIn 0.5s ease;
         }
 
         /* Cards */
         .card {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px var(--shadow);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px var(--shadow);
             padding: 1.5rem;
             margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px var(--shadow);
         }
 
         .dashboard-grid {
@@ -240,43 +215,45 @@
 
         .stat-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px var(--shadow);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px var(--shadow);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px var(--shadow);
         }
 
         .stat-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             margin-bottom: 1rem;
         }
 
-        .stat-icon.blue { background: rgba(37, 99, 235, 0.1); color: var(--primary); }
-        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--secondary); }
-        .stat-icon.yellow { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-icon.red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.875rem;
-        }
+        .stat-icon.blue { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; }
+        .stat-icon.green { background: linear-gradient(135deg, #10b981, #34d399); color: white; }
+        .stat-icon.yellow { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; }
+        .stat-icon.red { background: linear-gradient(135deg, #ef4444, #f87171); color: white; }
+        .stat-icon.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); color: white; }
 
         /* Forms */
         .form-group {
@@ -293,91 +270,72 @@
         .form-control {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            background: white;
-            cursor: pointer;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
         /* Buttons */
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: var(--gradient);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px var(--shadow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
         }
 
         .btn-secondary {
-            background: white;
+            background: #f3f4f6;
             color: var(--gray);
-            border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: var(--light-gray);
+            background: #e5e7eb;
         }
 
         .btn-success {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary), #34d399);
             color: white;
-        }
-        
-        .btn-success:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px var(--shadow);
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: linear-gradient(135deg, var(--danger), #f87171);
             color: white;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #fbbf24);
+            color: white;
         }
 
         /* Tables */
         .table-container {
             overflow-x: auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px var(--shadow);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px var(--shadow);
         }
 
         .table {
@@ -386,12 +344,12 @@
         }
 
         .table th {
-            background: var(--light-gray);
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
             padding: 1rem;
             text-align: left;
             font-weight: 600;
             color: #374151;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
         }
 
         .table td {
@@ -399,31 +357,60 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .table tr:hover {
-            background: #fafafa;
+        .table tr {
+            transition: all 0.2s ease;
         }
 
+        .table tr:hover {
+            background: #f9fafb;
+            transform: scale(1.01);
+        }
+
+        /* Status Badges */
         .status-badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
+            padding: 0.375rem 0.875rem;
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 500;
         }
 
         .status-badge.active {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--secondary);
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
         }
 
-        .status-badge.inactive {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+        .status-badge.warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
         }
 
-        .status-badge.pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
+        .status-badge.danger {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+        }
+
+        /* Alert Box */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            border: 1px solid #fbbf24;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #f87171;
         }
 
         /* Modal */
@@ -438,6 +425,7 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -446,195 +434,57 @@
 
         .modal-content {
             background: white;
-            border-radius: 12px;
+            border-radius: 20px;
             width: 90%;
             max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
-            animation: modalSlideIn 0.3s ease;
+            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes modalSlideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--gray);
-            cursor: pointer;
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        /* Calendar */
-        .calendar {
-            background: white;
+        /* Experience Alert Cards */
+        .experience-card {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px var(--shadow);
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
+            gap: 1rem;
+            animation: pulse 2s infinite;
         }
 
-        .calendar-day:hover {
-            background: var(--light-gray);
+        .experience-card.danger {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-color: #ef4444;
         }
 
-        .calendar-day.selected {
-            background: var(--primary);
-            color: white;
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 2000;
         }
 
-        .calendar-day.has-event::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            width: 4px;
-            height: 4px;
-            background: var(--danger);
-            border-radius: 50%;
-        }
-
-        /* Charts */
-        .chart-container {
+        .toast {
             background: white;
             border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px var(--shadow);
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray);
-        }
-
-        /* Filters */
-        .filters {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .search-box {
-            position: relative;
-            flex: 1;
-            max-width: 400px;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 1.5rem;
-        }
-
-        .tab {
+            box-shadow: 0 8px 16px var(--shadow);
             padding: 1rem 1.5rem;
-            color: var(--gray);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 300px;
+            animation: slideInLeft 0.3s ease;
         }
 
-        .tab:hover {
-            color: var(--primary);
-        }
-
-        .tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Responsive */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
-                transition: transform 0.3s;
             }
 
             .sidebar.active {
@@ -648,12 +498,68 @@
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
+        }
 
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
+        /* Tab Content */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Attendance Table */
+        .attendance-form {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Employee Card */
+        .employee-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .employee-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 12px var(--shadow);
         }
 
         /* Loading */
@@ -662,7 +568,6 @@
             align-items: center;
             justify-content: center;
             padding: 3rem;
-            color: var(--gray);
         }
 
         .spinner {
@@ -677,145 +582,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7); }
-            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(5, 150, 105, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 2000;
-        }
-
-        .toast {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px var(--shadow);
-            padding: 1rem 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            min-width: 300px;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--secondary);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger);
-        }
-
-        .toast.warning {
-            border-left: 4px solid var(--warning);
-        }
-
-        /* Employee Details */
-        .employee-details {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
-        }
-
-        .employee-photo {
-            width: 150px;
-            height: 150px;
-            border-radius: 12px;
-            background: var(--light-gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .info-item {
-            padding: 0.75rem;
-            background: var(--light-gray);
-            border-radius: 8px;
-        }
-
-        .info-label {
-            font-size: 0.875rem;
-            color: var(--gray);
-            margin-bottom: 0.25rem;
-        }
-
-        .info-value {
-            font-weight: 500;
-            color: #111827;
-        }
-
-        /* Vale Management */
-        .vale-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .vale-card {
-            padding: 1.5rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px var(--shadow);
-            text-align: center;
-        }
-
-        .vale-type {
-            font-size: 0.875rem;
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-        }
-
-        .vale-amount {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        /* Print Styles */
-        @media print {
-            .header, .sidebar, .btn, .modal {
-                display: none !important;
-            }
-
-            .main-content {
-                margin: 0;
-                padding: 0;
-            }
-
-            .card {
-                box-shadow: none;
-                border: 1px solid var(--border);
-                break-inside: avoid;
-            }
-        }
     </style>
 </head>
 <body>
@@ -824,7 +590,10 @@
         <div class="login-box">
             <div class="login-header">
                 <h1>CENTERTEL RH</h1>
-                <p>Portal de Recursos Humanos</p>
+                <p>Portal de Recursos Humanos 2.0</p>
+                <p style="margin-top: 1rem; color: var(--secondary); font-size: 0.875rem;">
+                    <i class="fas fa-rocket"></i> Versão melhorada com novas funcionalidades
+                </p>
             </div>
             <form id="loginForm">
                 <div class="form-group">
@@ -836,38 +605,14 @@
                     <input type="password" class="form-control" id="loginPassword" value="admin123" required>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%">
-                    <i class="fas fa-sign-in-alt"></i> Entrar (Credenciais já preenchidas)
+                    <i class="fas fa-sign-in-alt"></i> Entrar
                 </button>
             </form>
             
-            <!-- Botão de Acesso Rápido -->
-            <div style="margin-top: 20px; padding: 20px; border: 2px solid #f59e0b; border-radius: 8px; background-color: #fef3c7; text-align: center;">
-                <div style="font-size: 36px; margin-bottom: 10px; animation: pulse 1s infinite;">👇</div>
-                <button type="button" 
-                        style="background-color: #059669; color: white; width: 100%; padding: 14px 28px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); animation: pulse 2s infinite;" 
-                        onclick="try { quickLogin(); } catch(e) { console.error('Erro:', e); alert('Clique no botão Entrar com as credenciais já preenchidas!'); }" 
-                        onmouseover="this.style.backgroundColor='#047857'; this.style.animationPlayState='paused';" 
-                        onmouseout="this.style.backgroundColor='#059669'; this.style.animationPlayState='running';">
-                    ⚡ ACESSO RÁPIDO (DEMO)
+            <div style="margin-top: 20px; padding: 20px; border: 2px solid var(--secondary); border-radius: 12px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); text-align: center;">
+                <button type="button" class="btn btn-success" onclick="quickLogin()" style="width: 100%; font-size: 18px; padding: 14px;">
+                    <i class="fas fa-rocket"></i> ACESSO RÁPIDO
                 </button>
-                <p style="margin-top: 10px; color: #d97706; font-size: 14px; font-weight: bold;">
-                    ↑ CLIQUE AQUI PARA ENTRAR SEM SENHA ↑
-                </p>
-                <div style="margin-top: 15px; color: #6b7280; font-size: 14px;">
-                    <p>Ou use as credenciais:</p>
-                    <p><strong>E-mail:</strong> admin@centertel.com</p>
-                    <p><strong>Senha:</strong> admin123</p>
-                    <p style="margin-top: 10px; font-size: 12px;">
-                        💡 Dica: Pressione a tecla "D" para Demo
-                    </p>
-                    
-                    <!-- Fallback para problemas de JavaScript -->
-                    <noscript>
-                        <p style="color: red; margin-top: 10px;">
-                            JavaScript desabilitado! Use o botão azul "Entrar" com as credenciais já preenchidas.
-                        </p>
-                    </noscript>
-                </div>
             </div>
         </div>
     </div>
@@ -879,20 +624,24 @@
             <div class="header-content">
                 <div class="logo">
                     <i class="fas fa-users"></i>
-                    CENTERTEL RH
+                    CENTERTEL RH 2.0
                 </div>
                 <div class="header-actions">
-                    <div class="notifications">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </div>
-                    <div class="user-menu" onclick="logout()">
-                        <div class="user-avatar" id="userAvatar">A</div>
-                        <div>
-                            <div class="user-name" id="userName">Admin</div>
-                            <div style="font-size: 0.875rem; color: var(--gray)">Administrador</div>
+                    <button class="btn btn-secondary" onclick="toggleMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div id="notificationBell" style="position: relative; cursor: pointer;">
+                            <i class="fas fa-bell" style="font-size: 1.25rem; color: var(--gray);"></i>
+                            <span id="notificationCount" style="position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; display: none;">0</span>
                         </div>
-                        <i class="fas fa-chevron-down"></i>
+                        <div class="user-menu" onclick="logout()" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 1rem; border-radius: 10px; transition: background 0.2s;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gradient); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">A</div>
+                            <div>
+                                <div id="userName">Admin</div>
+                                <div style="font-size: 0.875rem; color: var(--gray)">Sair</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -901,33 +650,33 @@
         <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div class="nav-menu">
-                <a class="nav-item active" onclick="navigateTo('dashboard')">
+                <a class="nav-item active" onclick="navigateTo('dashboard', this)">
                     <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a class="nav-item" onclick="navigateTo('funcionarios')">
+                <a class="nav-item" onclick="navigateTo('funcionarios', this)">
                     <i class="fas fa-users"></i>
                     <span>Funcionários</span>
                 </a>
-                <a class="nav-item" onclick="navigateTo('vales')">
+                <a class="nav-item" onclick="navigateTo('vales', this)">
                     <i class="fas fa-ticket-alt"></i>
                     <span>Vales</span>
                 </a>
-                <a class="nav-item" onclick="navigateTo('ferias')">
+                <a class="nav-item" onclick="navigateTo('ferias', this)">
                     <i class="fas fa-umbrella-beach"></i>
                     <span>Férias</span>
                 </a>
-                <a class="nav-item" onclick="navigateTo('presencas')">
+                <a class="nav-item" onclick="navigateTo('experiencia', this)">
+                    <i class="fas fa-user-clock"></i>
+                    <span>Experiência</span>
+                </a>
+                <a class="nav-item" onclick="navigateTo('presencas', this)">
                     <i class="fas fa-clock"></i>
                     <span>Presenças</span>
                 </a>
-                <a class="nav-item" onclick="navigateTo('usuarios')">
-                    <i class="fas fa-user-cog"></i>
-                    <span>Usuários</span>
-                </a>
-                <a class="nav-item" onclick="navigateTo('relatorios')">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Relatórios</span>
+                <a class="nav-item" onclick="navigateTo('backup', this)">
+                    <i class="fas fa-database"></i>
+                    <span>Backup & Dados</span>
                 </a>
             </div>
         </nav>
@@ -938,34 +687,34 @@
         </main>
     </div>
 
-    <!-- Modals -->
+    <!-- Employee Modal -->
     <div class="modal" id="employeeModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Novo Funcionário</h2>
-                <button class="modal-close" onclick="closeModal('employeeModal')">
+            <div class="modal-header" style="padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h2>Novo Funcionário</h2>
+                <button class="btn btn-secondary" onclick="closeModal('employeeModal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 1.5rem;">
                 <div class="tabs">
                     <div class="tab active" onclick="switchTab('personal')">Dados Pessoais</div>
-                    <div class="tab" onclick="switchTab('contract')">Dados Contratuais</div>
-                    <div class="tab" onclick="switchTab('documents')">Documentos</div>
+                    <div class="tab" onclick="switchTab('professional')">Dados Profissionais</div>
+                    <div class="tab" onclick="switchTab('contract')">Contrato</div>
                 </div>
                 
                 <div id="personal" class="tab-content active">
                     <div class="form-group">
-                        <label class="form-label">Nome Completo</label>
+                        <label class="form-label">Nome Completo *</label>
                         <input type="text" class="form-control" id="empName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Número da Matrícula *</label>
+                        <input type="text" class="form-control" id="empMatricula" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">CPF</label>
                         <input type="text" class="form-control" id="empCPF" placeholder="000.000.000-00">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">RG</label>
-                        <input type="text" class="form-control" id="empRG">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Data de Nascimento</label>
@@ -977,29 +726,47 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Telefone</label>
-                        <input type="tel" class="form-control" id="empPhone">
+                        <input type="tel" class="form-control" id="empPhone" placeholder="(11) 99999-9999">
+                    </div>
+                </div>
+                
+                <div id="professional" class="tab-content">
+                    <div class="form-group">
+                        <label class="form-label">Cargo *</label>
+                        <input type="text" class="form-control" id="empPosition" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Departamento</label>
+                        <select class="form-control" id="empDepartment">
+                            <option value="">Selecione...</option>
+                            <option value="Vendas">Vendas</option>
+                            <option value="TI">Tecnologia da Informação</option>
+                            <option value="RH">Recursos Humanos</option>
+                            <option value="Financeiro">Financeiro</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Operações">Operações</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Equipe *</label>
+                        <input type="text" class="form-control" id="empEquipe" placeholder="Ex: Equipe A, Time Norte, etc">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Empresa Contratada *</label>
+                        <select class="form-control" id="empEmpresa">
+                            <option value="">Selecione...</option>
+                            <option value="CENTERTEL MATRIZ">CENTERTEL MATRIZ</option>
+                            <option value="CENTERTEL FILIAL SP">CENTERTEL FILIAL SP</option>
+                            <option value="CENTERTEL FILIAL RJ">CENTERTEL FILIAL RJ</option>
+                            <option value="TERCEIRIZADA">TERCEIRIZADA</option>
+                        </select>
                     </div>
                 </div>
                 
                 <div id="contract" class="tab-content">
                     <div class="form-group">
-                        <label class="form-label">Cargo</label>
-                        <input type="text" class="form-control" id="empPosition">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Departamento</label>
-                        <select class="form-select" id="empDepartment">
-                            <option value="">Selecione...</option>
-                            <option value="TI">Tecnologia da Informação</option>
-                            <option value="RH">Recursos Humanos</option>
-                            <option value="Financeiro">Financeiro</option>
-                            <option value="Comercial">Comercial</option>
-                            <option value="Operações">Operações</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Data de Admissão</label>
-                        <input type="date" class="form-control" id="empAdmissionDate">
+                        <label class="form-label">Data de Admissão *</label>
+                        <input type="date" class="form-control" id="empAdmissionDate" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Salário</label>
@@ -1007,35 +774,26 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Tipo de Contrato</label>
-                        <select class="form-select" id="empContractType">
+                        <select class="form-control" id="empContractType">
                             <option value="CLT">CLT</option>
                             <option value="PJ">PJ</option>
                             <option value="Estagiário">Estagiário</option>
                             <option value="Temporário">Temporário</option>
                         </select>
                     </div>
-                </div>
-                
-                <div id="documents" class="tab-content">
                     <div class="form-group">
-                        <label class="form-label">CTPS</label>
-                        <input type="text" class="form-control" id="empCTPS">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">PIS</label>
-                        <input type="text" class="form-control" id="empPIS">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Título de Eleitor</label>
-                        <input type="text" class="form-control" id="empVoterTitle">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Reservista</label>
-                        <input type="text" class="form-control" id="empReservist">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" id="empStatus">
+                            <option value="active">Ativo</option>
+                            <option value="experiencia">Em Experiência</option>
+                            <option value="ferias">Férias</option>
+                            <option value="afastado">Afastado</option>
+                            <option value="inactive">Inativo</option>
+                        </select>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="padding: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem;">
                 <button class="btn btn-secondary" onclick="closeModal('employeeModal')">Cancelar</button>
                 <button class="btn btn-primary" onclick="saveEmployee()">
                     <i class="fas fa-save"></i> Salvar
@@ -1047,26 +805,27 @@
     <!-- Vale Modal -->
     <div class="modal" id="valeModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Novo Vale</h2>
-                <button class="modal-close" onclick="closeModal('valeModal')">
+            <div class="modal-header" style="padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h2>Novo Vale</h2>
+                <button class="btn btn-secondary" onclick="closeModal('valeModal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 1.5rem;">
                 <div class="form-group">
                     <label class="form-label">Funcionário</label>
-                    <select class="form-select" id="valeEmployee">
+                    <select class="form-control" id="valeEmployee">
                         <option value="">Selecione o funcionário...</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Tipo de Vale</label>
-                    <select class="form-select" id="valeType">
+                    <select class="form-control" id="valeType">
                         <option value="Transporte">Vale Transporte</option>
                         <option value="Refeição">Vale Refeição</option>
                         <option value="Alimentação">Vale Alimentação</option>
                         <option value="Combustível">Vale Combustível</option>
+                        <option value="Outro">Outro</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1082,10 +841,62 @@
                     <textarea class="form-control" id="valeObservations" rows="3"></textarea>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="padding: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem;">
                 <button class="btn btn-secondary" onclick="closeModal('valeModal')">Cancelar</button>
                 <button class="btn btn-primary" onclick="saveVale()">
-                    <i class="fas fa-save"></i> Salvar
+                    <i class="fas fa-save"></i> Salvar Vale
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Modal -->
+    <div class="modal" id="attendanceModal">
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h2>Registrar Presença</h2>
+                <button class="btn btn-secondary" onclick="closeModal('attendanceModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 1.5rem;">
+                <div class="form-group">
+                    <label class="form-label">Funcionário</label>
+                    <select class="form-control" id="attendanceEmployee">
+                        <option value="">Selecione o funcionário...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Data</label>
+                    <input type="date" class="form-control" id="attendanceDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hora de Entrada</label>
+                    <input type="time" class="form-control" id="attendanceCheckIn">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hora de Saída</label>
+                    <input type="time" class="form-control" id="attendanceCheckOut">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-control" id="attendanceStatus">
+                        <option value="present">Presente</option>
+                        <option value="absent">Ausente</option>
+                        <option value="late">Atrasado</option>
+                        <option value="justified">Falta Justificada</option>
+                        <option value="holiday">Feriado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Observações</label>
+                    <textarea class="form-control" id="attendanceObservations" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem;">
+                <button class="btn btn-secondary" onclick="closeModal('attendanceModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveAttendance()">
+                    <i class="fas fa-save"></i> Registrar
                 </button>
             </div>
         </div>
@@ -1095,9 +906,211 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // Quick Login Function (accessible globally)
+        // Data Store with LocalStorage
+        class DataStore {
+            constructor() {
+                this.loadData();
+                this.checkNotifications();
+            }
+
+            loadData() {
+                try {
+                    const savedData = localStorage.getItem('centertelRHData');
+                    if (savedData) {
+                        const data = JSON.parse(savedData);
+                        this.employees = data.employees || [];
+                        this.vales = data.vales || [];
+                        this.ferias = data.ferias || [];
+                        this.presencas = data.presencas || [];
+                    } else {
+                        this.initializeDefaultData();
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    this.initializeDefaultData();
+                }
+            }
+
+            initializeDefaultData() {
+                this.employees = [
+                    {
+                        id: 1,
+                        name: 'João Silva',
+                        matricula: '001',
+                        cpf: '123.456.789-00',
+                        email: 'joao.silva@centertel.com',
+                        phone: '(11) 98765-4321',
+                        position: 'Vendedor Senior',
+                        department: 'Vendas',
+                        equipe: 'Equipe Norte',
+                        empresa: 'CENTERTEL MATRIZ',
+                        admissionDate: '2024-01-15',
+                        salary: 3500.00,
+                        contractType: 'CLT',
+                        status: 'experiencia',
+                        birthDate: '1990-05-15'
+                    },
+                    {
+                        id: 2,
+                        name: 'Maria Santos',
+                        matricula: '002',
+                        cpf: '987.654.321-00',
+                        email: 'maria.santos@centertel.com',
+                        phone: '(11) 91234-5678',
+                        position: 'Vendedora',
+                        department: 'Vendas',
+                        equipe: 'Equipe Sul',
+                        empresa: 'CENTERTEL FILIAL SP',
+                        admissionDate: '2023-11-20',
+                        salary: 3000.00,
+                        contractType: 'CLT',
+                        status: 'experiencia',
+                        birthDate: '1985-08-22'
+                    }
+                ];
+                this.vales = [];
+                this.ferias = [];
+                this.presencas = [];
+                this.saveData();
+            }
+
+            saveData() {
+                try {
+                    const data = {
+                        employees: this.employees,
+                        vales: this.vales,
+                        ferias: this.ferias,
+                        presencas: this.presencas,
+                        lastSaved: new Date().toISOString()
+                    };
+                    localStorage.setItem('centertelRHData', JSON.stringify(data));
+                    return true;
+                } catch (error) {
+                    console.error('Erro ao salvar dados:', error);
+                    return false;
+                }
+            }
+
+            addEmployee(employee) {
+                employee.id = Date.now();
+                this.employees.push(employee);
+                this.checkNotifications();
+                return this.saveData();
+            }
+
+            updateEmployee(id, data) {
+                const index = this.employees.findIndex(emp => emp.id === id);
+                if (index !== -1) {
+                    this.employees[index] = { ...this.employees[index], ...data };
+                    return this.saveData();
+                }
+                return false;
+            }
+
+            deleteEmployee(id) {
+                this.employees = this.employees.filter(emp => emp.id !== id);
+                return this.saveData();
+            }
+
+            addVale(vale) {
+                vale.id = Date.now();
+                this.vales.push(vale);
+                return this.saveData();
+            }
+
+            deleteVale(id) {
+                this.vales = this.vales.filter(v => v.id !== id);
+                return this.saveData();
+            }
+
+            addAttendance(attendance) {
+                attendance.id = Date.now();
+                this.presencas.push(attendance);
+                return this.saveData();
+            }
+
+            checkNotifications() {
+                let notifications = 0;
+                
+                // Check experience periods
+                const today = new Date();
+                this.employees.forEach(emp => {
+                    if (emp.status === 'experiencia' && emp.admissionDate) {
+                        const admission = new Date(emp.admissionDate);
+                        const daysSinceAdmission = Math.floor((today - admission) / (1000 * 60 * 60 * 24));
+                        
+                        if (daysSinceAdmission >= 40 && daysSinceAdmission <= 45) notifications++;
+                        if (daysSinceAdmission >= 85 && daysSinceAdmission <= 90) notifications++;
+                    }
+                });
+                
+                // Check vacation periods
+                this.employees.forEach(emp => {
+                    if (emp.admissionDate) {
+                        const admission = new Date(emp.admissionDate);
+                        const monthsSinceAdmission = Math.floor((today - admission) / (1000 * 60 * 60 * 24 * 30));
+                        
+                        if (monthsSinceAdmission >= 11 && monthsSinceAdmission <= 12) notifications++;
+                    }
+                });
+                
+                // Update notification count
+                const notificationCount = document.getElementById('notificationCount');
+                if (notificationCount) {
+                    if (notifications > 0) {
+                        notificationCount.textContent = notifications;
+                        notificationCount.style.display = 'block';
+                    } else {
+                        notificationCount.style.display = 'none';
+                    }
+                }
+                
+                return notifications;
+            }
+
+            exportData() {
+                const data = {
+                    employees: this.employees,
+                    vales: this.vales,
+                    ferias: this.ferias,
+                    presencas: this.presencas,
+                    exportDate: new Date().toISOString()
+                };
+                return JSON.stringify(data, null, 2);
+            }
+
+            importData(jsonData) {
+                try {
+                    const data = JSON.parse(jsonData);
+                    this.employees = data.employees || [];
+                    this.vales = data.vales || [];
+                    this.ferias = data.ferias || [];
+                    this.presencas = data.presencas || [];
+                    this.checkNotifications();
+                    return this.saveData();
+                } catch (error) {
+                    console.error('Erro ao importar dados:', error);
+                    return false;
+                }
+            }
+
+            clearAllData() {
+                if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita!')) {
+                    localStorage.removeItem('centertelRHData');
+                    this.initializeDefaultData();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        // Initialize data store
+        const dataStore = new DataStore();
+        let currentUser = null;
+        let currentPage = 'dashboard';
+
+        // Quick Login
         function quickLogin() {
-            console.log('Quick login clicked');
             currentUser = {
                 id: 1,
                 name: 'Administrador',
@@ -1107,130 +1120,9 @@
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('appContainer').style.display = 'block';
             document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
             loadDashboard();
             showToast('Login realizado com sucesso!', 'success');
         }
-        
-        // Data Store (simulating database)
-        let currentUser = null;
-        let currentPage = 'dashboard';
-        
-        // Sample data
-        let employees = [
-            {
-                id: 1,
-                name: 'João Silva',
-                cpf: '123.456.789-00',
-                rg: '12.345.678-9',
-                birthDate: '1990-05-15',
-                email: 'joao.silva@centertel.com',
-                phone: '(11) 98765-4321',
-                position: 'Desenvolvedor Senior',
-                department: 'TI',
-                admissionDate: '2020-03-01',
-                salary: 8500.00,
-                contractType: 'CLT',
-                status: 'active'
-            },
-            {
-                id: 2,
-                name: 'Maria Santos',
-                cpf: '987.654.321-00',
-                rg: '98.765.432-1',
-                birthDate: '1985-08-22',
-                email: 'maria.santos@centertel.com',
-                phone: '(11) 91234-5678',
-                position: 'Analista de RH',
-                department: 'RH',
-                admissionDate: '2019-07-15',
-                salary: 6500.00,
-                contractType: 'CLT',
-                status: 'active'
-            },
-            {
-                id: 3,
-                name: 'Pedro Oliveira',
-                cpf: '456.789.123-00',
-                rg: '45.678.912-3',
-                birthDate: '1995-12-10',
-                email: 'pedro.oliveira@centertel.com',
-                phone: '(11) 95555-5555',
-                position: 'Analista Financeiro',
-                department: 'Financeiro',
-                admissionDate: '2021-01-10',
-                salary: 5500.00,
-                contractType: 'CLT',
-                status: 'active'
-            }
-        ];
-
-        let vales = [
-            {
-                id: 1,
-                employeeId: 1,
-                employeeName: 'João Silva',
-                type: 'Transporte',
-                amount: 220.00,
-                month: '2024-01',
-                status: 'approved',
-                observations: ''
-            },
-            {
-                id: 2,
-                employeeId: 1,
-                employeeName: 'João Silva',
-                type: 'Refeição',
-                amount: 650.00,
-                month: '2024-01',
-                status: 'approved',
-                observations: ''
-            },
-            {
-                id: 3,
-                employeeId: 2,
-                employeeName: 'Maria Santos',
-                type: 'Transporte',
-                amount: 198.00,
-                month: '2024-01',
-                status: 'pending',
-                observations: 'Aguardando aprovação'
-            }
-        ];
-
-        let ferias = [
-            {
-                id: 1,
-                employeeId: 1,
-                employeeName: 'João Silva',
-                startDate: '2024-02-01',
-                endDate: '2024-02-20',
-                days: 20,
-                status: 'approved',
-                period: '2023/2024'
-            }
-        ];
-
-        let presencas = [
-            {
-                id: 1,
-                employeeId: 1,
-                employeeName: 'João Silva',
-                date: '2024-01-22',
-                checkIn: '08:00',
-                checkOut: '18:00',
-                type: 'present'
-            },
-            {
-                id: 2,
-                employeeId: 2,
-                employeeName: 'Maria Santos',
-                date: '2024-01-22',
-                checkIn: '09:00',
-                checkOut: '18:30',
-                type: 'present'
-            }
-        ];
 
         // Authentication
         document.addEventListener('DOMContentLoaded', function() {
@@ -1238,56 +1130,33 @@
             if (loginForm) {
                 loginForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    const email = document.getElementById('loginEmail').value;
-                    const password = document.getElementById('loginPassword').value;
-                    
-                    console.log('Tentando login com:', email, password);
-                    
-                    // Simple authentication (in real app, this would be server-side)
-                    if (email === 'admin@centertel.com' && password === 'admin123') {
-                        currentUser = {
-                            id: 1,
-                            name: 'Administrador',
-                            email: email,
-                            role: 'admin'
-                        };
-                        login();
-                    } else {
-                        showToast('E-mail ou senha incorretos', 'error');
-                    }
+                    quickLogin();
                 });
             }
+            
+            // Set current date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('attendanceDate').value = today;
         });
-
-        function login() {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'block';
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
-            loadDashboard();
-            showToast('Login realizado com sucesso!', 'success');
-        }
 
         function logout() {
             if (confirm('Deseja realmente sair?')) {
                 currentUser = null;
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('appContainer').style.display = 'none';
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-                showToast('Logout realizado com sucesso', 'success');
+                showToast('Logout realizado', 'success');
             }
         }
 
         // Navigation
-        function navigateTo(page) {
+        function navigateTo(page, element) {
             currentPage = page;
             
             // Update active menu
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.target.closest('.nav-item').classList.add('active');
+            element.classList.add('active');
             
             // Load page content
             switch(page) {
@@ -1303,111 +1172,89 @@
                 case 'ferias':
                     loadFerias();
                     break;
+                case 'experiencia':
+                    loadExperiencia();
+                    break;
                 case 'presencas':
                     loadPresencas();
                     break;
-                case 'usuarios':
-                    loadUsuarios();
-                    break;
-                case 'relatorios':
-                    loadRelatorios();
+                case 'backup':
+                    loadBackup();
                     break;
             }
         }
 
+        // Toggle mobile menu
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
         // Dashboard
         function loadDashboard() {
-            const activeEmployees = employees.filter(emp => emp.status === 'active').length;
-            const totalVales = vales.reduce((sum, vale) => sum + vale.amount, 0);
-            const pendingFerias = ferias.filter(f => f.status === 'pending').length;
-            const todayPresences = presencas.filter(p => p.date === '2024-01-22').length;
+            const activeEmployees = dataStore.employees.filter(emp => emp.status === 'active' || emp.status === 'experiencia').length;
+            const totalVales = dataStore.vales.reduce((sum, vale) => sum + vale.amount, 0);
+            const experienceAlerts = getExperienceAlerts();
+            const vacationAlerts = getVacationAlerts();
             
             document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Dashboard</h1>
-                    <button class="btn btn-primary" onclick="generateReport()">
-                        <i class="fas fa-download"></i> Gerar Relatório
-                    </button>
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dashboard</h1>
+                    <div style="color: var(--gray);">
+                        <i class="fas fa-clock"></i> ${new Date().toLocaleString('pt-BR')}
+                    </div>
                 </div>
+                
+                ${experienceAlerts.length > 0 || vacationAlerts.length > 0 ? `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Atenção!</strong><br>
+                            ${experienceAlerts.length > 0 ? `${experienceAlerts.length} funcionário(s) próximo(s) do fim da experiência<br>` : ''}
+                            ${vacationAlerts.length > 0 ? `${vacationAlerts.length} funcionário(s) próximo(s) do período de férias` : ''}
+                        </div>
+                    </div>
+                ` : ''}
                 
                 <div class="dashboard-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
                             <i class="fas fa-users"></i>
                         </div>
-                        <div class="stat-value">${activeEmployees}</div>
-                        <div class="stat-label">Funcionários Ativos</div>
+                        <div style="font-size: 2rem; font-weight: bold;">${activeEmployees}</div>
+                        <div style="color: var(--gray);">Funcionários Ativos</div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-icon green">
                             <i class="fas fa-ticket-alt"></i>
                         </div>
-                        <div class="stat-value">R$ ${totalVales.toFixed(2)}</div>
-                        <div class="stat-label">Total em Vales (Mês)</div>
+                        <div style="font-size: 2rem; font-weight: bold;">R$ ${totalVales.toFixed(2)}</div>
+                        <div style="color: var(--gray);">Total em Vales</div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-icon yellow">
-                            <i class="fas fa-umbrella-beach"></i>
+                            <i class="fas fa-user-clock"></i>
                         </div>
-                        <div class="stat-value">${pendingFerias}</div>
-                        <div class="stat-label">Férias Pendentes</div>
+                        <div style="font-size: 2rem; font-weight: bold;">${experienceAlerts.length}</div>
+                        <div style="color: var(--gray);">Alertas de Experiência</div>
                     </div>
                     
                     <div class="stat-card">
-                        <div class="stat-icon red">
-                            <i class="fas fa-clock"></i>
+                        <div class="stat-icon purple">
+                            <i class="fas fa-umbrella-beach"></i>
                         </div>
-                        <div class="stat-value">${todayPresences}</div>
-                        <div class="stat-label">Presenças Hoje</div>
+                        <div style="font-size: 2rem; font-weight: bold;">${vacationAlerts.length}</div>
+                        <div style="color: var(--gray);">Próximos de Férias</div>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h2 style="margin-bottom: 1.5rem;">Últimas Atividades</h2>
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Tipo</th>
-                                    <th>Descrição</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>22/01/2024</td>
-                                    <td>Vale</td>
-                                    <td>Vale transporte - Maria Santos</td>
-                                    <td><span class="status-badge pending">Pendente</span></td>
-                                </tr>
-                                <tr>
-                                    <td>22/01/2024</td>
-                                    <td>Férias</td>
-                                    <td>Solicitação de férias - João Silva</td>
-                                    <td><span class="status-badge active">Aprovado</span></td>
-                                </tr>
-                                <tr>
-                                    <td>21/01/2024</td>
-                                    <td>Funcionário</td>
-                                    <td>Novo funcionário cadastrado - Pedro Oliveira</td>
-                                    <td><span class="status-badge active">Concluído</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                    <div class="chart-container">
-                        <i class="fas fa-chart-bar" style="font-size: 3rem;"></i>
-                        <div>Gráfico de Vales por Departamento</div>
-                    </div>
-                    <div class="chart-container">
-                        <i class="fas fa-chart-line" style="font-size: 3rem;"></i>
-                        <div>Evolução de Presenças</div>
+                    <h2 style="margin-bottom: 1.5rem; color: var(--primary);">
+                        <i class="fas fa-chart-line"></i> Resumo por Equipe
+                    </h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        ${getTeamSummary()}
                     </div>
                 </div>
             `;
@@ -1416,63 +1263,45 @@
         // Funcionários
         function loadFuncionarios() {
             document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Funcionários</h1>
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold;">Funcionários</h1>
                     <button class="btn btn-primary" onclick="openModal('employeeModal')">
                         <i class="fas fa-plus"></i> Novo Funcionário
                     </button>
-                </div>
-                
-                <div class="filters">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" class="search-input" placeholder="Buscar funcionário..." onkeyup="searchEmployees(this.value)">
-                    </div>
-                    <div class="filter-group">
-                        <select class="form-select">
-                            <option value="">Todos os departamentos</option>
-                            <option value="TI">TI</option>
-                            <option value="RH">RH</option>
-                            <option value="Financeiro">Financeiro</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <select class="form-select">
-                            <option value="">Todos os status</option>
-                            <option value="active">Ativo</option>
-                            <option value="inactive">Inativo</option>
-                        </select>
-                    </div>
                 </div>
                 
                 <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>Matrícula</th>
                                 <th>Nome</th>
                                 <th>CPF</th>
                                 <th>Cargo</th>
-                                <th>Departamento</th>
+                                <th>Equipe</th>
+                                <th>Empresa</th>
                                 <th>Admissão</th>
                                 <th>Status</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="employeesTableBody">
-                            ${employees.map(emp => `
+                        <tbody>
+                            ${dataStore.employees.map(emp => `
                                 <tr>
+                                    <td><strong>${emp.matricula}</strong></td>
                                     <td>${emp.name}</td>
-                                    <td>${emp.cpf}</td>
-                                    <td>${emp.position}</td>
-                                    <td>${emp.department}</td>
-                                    <td>${formatDate(emp.admissionDate)}</td>
-                                    <td><span class="status-badge ${emp.status}">${emp.status === 'active' ? 'Ativo' : 'Inativo'}</span></td>
+                                    <td>${emp.cpf || '-'}</td>
+                                    <td>${emp.position || '-'}</td>
+                                    <td><span class="status-badge active">${emp.equipe || '-'}</span></td>
+                                    <td>${emp.empresa || '-'}</td>
+                                    <td>${emp.admissionDate ? formatDate(emp.admissionDate) : '-'}</td>
+                                    <td>${getStatusBadge(emp.status)}</td>
                                     <td>
-                                        <button class="btn btn-secondary" style="padding: 0.5rem;" onclick="viewEmployee(${emp.id})">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-secondary" style="padding: 0.5rem;" onclick="editEmployee(${emp.id})">
+                                        <button class="btn btn-secondary btn-sm" onclick="editEmployee(${emp.id})" style="padding: 0.5rem;">
                                             <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteEmployee(${emp.id})" style="padding: 0.5rem;">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -1486,7 +1315,7 @@
         // Vales
         function loadVales() {
             const currentMonth = new Date().toISOString().slice(0, 7);
-            const monthlyVales = vales.filter(v => v.month === '2024-01');
+            const monthlyVales = dataStore.vales.filter(v => v.month === currentMonth);
             const totalByType = {};
             
             monthlyVales.forEach(vale => {
@@ -1497,25 +1326,18 @@
             });
             
             document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Controle de Vales</h1>
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold;">Controle de Vales</h1>
                     <button class="btn btn-primary" onclick="openValeModal()">
-                        <i class="fas fa-plus"></i> Novo Vale
+                        <i class="fas fa-plus"></i> Incluir Vale
                     </button>
                 </div>
                 
-                <div class="filters">
-                    <div class="filter-group">
-                        <label class="form-label">Mês de Referência</label>
-                        <input type="month" class="form-control" value="2024-01" onchange="filterValesByMonth(this.value)">
-                    </div>
-                </div>
-                
-                <div class="vale-summary">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                     ${Object.entries(totalByType).map(([type, total]) => `
-                        <div class="vale-card">
-                            <div class="vale-type">${type}</div>
-                            <div class="vale-amount">R$ ${total.toFixed(2)}</div>
+                        <div class="card" style="text-align: center;">
+                            <div style="color: var(--gray); margin-bottom: 0.5rem;">${type}</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">R$ ${total.toFixed(2)}</div>
                         </div>
                     `).join('')}
                 </div>
@@ -1528,33 +1350,22 @@
                                 <th>Tipo</th>
                                 <th>Valor</th>
                                 <th>Mês</th>
-                                <th>Status</th>
                                 <th>Observações</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${monthlyVales.map(vale => `
+                            ${dataStore.vales.map(vale => `
                                 <tr>
                                     <td>${vale.employeeName}</td>
-                                    <td>${vale.type}</td>
-                                    <td>R$ ${vale.amount.toFixed(2)}</td>
+                                    <td><span class="status-badge active">${vale.type}</span></td>
+                                    <td><strong>R$ ${vale.amount.toFixed(2)}</strong></td>
                                     <td>${formatMonth(vale.month)}</td>
-                                    <td>
-                                        <span class="status-badge ${vale.status === 'approved' ? 'active' : 'pending'}">
-                                            ${vale.status === 'approved' ? 'Aprovado' : 'Pendente'}
-                                        </span>
-                                    </td>
                                     <td>${vale.observations || '-'}</td>
                                     <td>
-                                        ${vale.status === 'pending' ? `
-                                            <button class="btn btn-success" style="padding: 0.5rem;" onclick="approveVale(${vale.id})">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-                                            <button class="btn btn-danger" style="padding: 0.5rem;" onclick="rejectVale(${vale.id})">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        ` : ''}
+                                        <button class="btn btn-danger btn-sm" onclick="deleteVale(${vale.id})" style="padding: 0.5rem;">
+                                            <i class="fas fa-trash"></i> Remover
+                                        </button>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -1566,65 +1377,171 @@
 
         // Férias
         function loadFerias() {
+            const vacationAlerts = getVacationAlerts();
+            
             document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Gestão de Férias</h1>
-                    <button class="btn btn-primary" onclick="openFeriasModal()">
-                        <i class="fas fa-plus"></i> Solicitar Férias
-                    </button>
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold;">Gestão de Férias</h1>
                 </div>
                 
-                <div class="calendar">
-                    <div class="calendar-header">
-                        <button class="btn btn-secondary"><i class="fas fa-chevron-left"></i></button>
-                        <h2>Janeiro 2024</h2>
-                        <button class="btn btn-secondary"><i class="fas fa-chevron-right"></i></button>
+                ${vacationAlerts.length > 0 ? `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-umbrella-beach"></i>
+                        <div>
+                            <strong>Funcionários próximos do período de férias:</strong><br>
+                            Os funcionários abaixo estão completando ou já completaram 12 meses de trabalho.
+                        </div>
                     </div>
-                    <div class="calendar-grid">
-                        ${generateCalendar()}
+                    
+                    ${vacationAlerts.map(alert => `
+                        <div class="experience-card">
+                            <i class="fas fa-user-clock" style="font-size: 2rem; color: var(--warning);"></i>
+                            <div style="flex: 1;">
+                                <h3>${alert.employee.name} - ${alert.employee.matricula}</h3>
+                                <p style="margin: 0.5rem 0;">
+                                    <strong>Admissão:</strong> ${formatDate(alert.employee.admissionDate)} | 
+                                    <strong>Tempo de empresa:</strong> ${alert.monthsWorked} meses
+                                </p>
+                                <p style="margin: 0; color: var(--warning); font-weight: 600;">
+                                    ${alert.message}
+                                </p>
+                            </div>
+                        </div>
+                    `).join('')}
+                ` : `
+                    <div class="card" style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                        <h3>Nenhum funcionário próximo do período de férias</h3>
+                        <p style="color: var(--gray);">Todos os funcionários estão dentro do prazo regular.</p>
                     </div>
-                </div>
+                `}
                 
                 <div class="card">
-                    <h2 style="margin-bottom: 1.5rem;">Solicitações de Férias</h2>
+                    <h2 style="margin-bottom: 1.5rem;">Todos os Funcionários - Vendas</h2>
                     <div class="table-container">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Funcionário</th>
-                                    <th>Período</th>
-                                    <th>Início</th>
-                                    <th>Fim</th>
-                                    <th>Dias</th>
-                                    <th>Status</th>
-                                    <th>Ações</th>
+                                    <th>Nome</th>
+                                    <th>Matrícula</th>
+                                    <th>Admissão</th>
+                                    <th>Tempo de Empresa</th>
+                                    <th>Status Férias</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ${ferias.map(f => `
-                                    <tr>
-                                        <td>${f.employeeName}</td>
-                                        <td>${f.period}</td>
-                                        <td>${formatDate(f.startDate)}</td>
-                                        <td>${formatDate(f.endDate)}</td>
-                                        <td>${f.days}</td>
-                                        <td>
-                                            <span class="status-badge ${f.status === 'approved' ? 'active' : 'pending'}">
-                                                ${f.status === 'approved' ? 'Aprovado' : 'Pendente'}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            ${f.status === 'pending' ? `
-                                                <button class="btn btn-success" style="padding: 0.5rem;">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                                <button class="btn btn-danger" style="padding: 0.5rem;">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            ` : ''}
-                                        </td>
-                                    </tr>
-                                `).join('')}
+                                ${dataStore.employees.filter(emp => emp.department === 'Vendas').map(emp => {
+                                    const monthsWorked = getMonthsWorked(emp.admissionDate);
+                                    const vacationStatus = monthsWorked >= 11 ? 'Elegível' : `Faltam ${12 - monthsWorked} meses`;
+                                    const statusClass = monthsWorked >= 11 ? 'warning' : 'active';
+                                    
+                                    return `
+                                        <tr>
+                                            <td>${emp.name}</td>
+                                            <td>${emp.matricula}</td>
+                                            <td>${formatDate(emp.admissionDate)}</td>
+                                            <td>${monthsWorked} meses</td>
+                                            <td><span class="status-badge ${statusClass}">${vacationStatus}</span></td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Experiência
+        function loadExperiencia() {
+            const experienceAlerts = getExperienceAlerts();
+            
+            document.getElementById('mainContent').innerHTML = `
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold;">Controle de Experiência</h1>
+                </div>
+                
+                ${experienceAlerts.length > 0 ? `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Atenção! Funcionários próximos do fim da experiência:</strong><br>
+                            Verifique os funcionários abaixo e tome as ações necessárias.
+                        </div>
+                    </div>
+                    
+                    ${experienceAlerts.map(alert => `
+                        <div class="experience-card ${alert.days >= 85 ? 'danger' : ''}">
+                            <i class="fas fa-user-clock" style="font-size: 2rem; color: ${alert.days >= 85 ? 'var(--danger)' : 'var(--warning)'};"></i>
+                            <div style="flex: 1;">
+                                <h3>${alert.employee.name} - ${alert.employee.matricula}</h3>
+                                <p style="margin: 0.5rem 0;">
+                                    <strong>Cargo:</strong> ${alert.employee.position} | 
+                                    <strong>Equipe:</strong> ${alert.employee.equipe} | 
+                                    <strong>Admissão:</strong> ${formatDate(alert.employee.admissionDate)}
+                                </p>
+                                <p style="margin: 0; color: ${alert.days >= 85 ? 'var(--danger)' : 'var(--warning)'}; font-weight: 600;">
+                                    ${alert.message}
+                                </p>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: ${alert.days >= 85 ? 'var(--danger)' : 'var(--warning)'};">
+                                    ${alert.days}
+                                </div>
+                                <div style="color: var(--gray);">dias</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                ` : `
+                    <div class="card" style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-check-circle" style="font-size: 3rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                        <h3>Nenhum alerta de experiência no momento</h3>
+                        <p style="color: var(--gray);">Todos os funcionários estão fora do período crítico de experiência.</p>
+                    </div>
+                `}
+                
+                <div class="card">
+                    <h2 style="margin-bottom: 1.5rem;">Funcionários em Experiência</h2>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Matrícula</th>
+                                    <th>Cargo</th>
+                                    <th>Admissão</th>
+                                    <th>Dias de Experiência</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${dataStore.employees.filter(emp => emp.status === 'experiencia').map(emp => {
+                                    const days = getDaysWorked(emp.admissionDate);
+                                    let statusBadge = '';
+                                    
+                                    if (days >= 90) {
+                                        statusBadge = '<span class="status-badge danger">Experiência Vencida</span>';
+                                    } else if (days >= 85) {
+                                        statusBadge = '<span class="status-badge danger">Próximo de 90 dias</span>';
+                                    } else if (days >= 45) {
+                                        statusBadge = '<span class="status-badge warning">Passou 45 dias</span>';
+                                    } else if (days >= 40) {
+                                        statusBadge = '<span class="status-badge warning">Próximo de 45 dias</span>';
+                                    } else {
+                                        statusBadge = '<span class="status-badge active">Em experiência</span>';
+                                    }
+                                    
+                                    return `
+                                        <tr>
+                                            <td>${emp.name}</td>
+                                            <td>${emp.matricula}</td>
+                                            <td>${emp.position}</td>
+                                            <td>${formatDate(emp.admissionDate)}</td>
+                                            <td><strong>${days} dias</strong></td>
+                                            <td>${statusBadge}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
                             </tbody>
                         </table>
                     </div>
@@ -1635,258 +1552,135 @@
         // Presenças
         function loadPresencas() {
             const today = new Date().toISOString().split('T')[0];
+            const todayAttendance = dataStore.presencas.filter(p => p.date === today);
             
             document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Controle de Presenças</h1>
-                    <button class="btn btn-primary" onclick="registrarPonto()">
-                        <i class="fas fa-clock"></i> Registrar Ponto
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold;">Controle de Presenças</h1>
+                    <button class="btn btn-primary" onclick="openAttendanceModal()">
+                        <i class="fas fa-plus"></i> Registrar Presença
                     </button>
                 </div>
                 
-                <div class="filters">
-                    <div class="filter-group">
-                        <label class="form-label">Data</label>
-                        <input type="date" class="form-control" value="${today}" onchange="filterPresencasByDate(this.value)">
-                    </div>
-                    <div class="filter-group">
-                        <select class="form-select">
-                            <option value="">Todos os funcionários</option>
-                            ${employees.map(emp => `<option value="${emp.id}">${emp.name}</option>`).join('')}
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="dashboard-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon green">
-                            <i class="fas fa-user-check"></i>
+                <div class="attendance-form">
+                    <h3 style="margin-bottom: 1rem;">
+                        <i class="fas fa-calendar-day"></i> Presenças de Hoje - ${formatDate(today)}
+                    </h3>
+                    <div class="attendance-grid">
+                        <div class="card" style="text-align: center;">
+                            <div class="stat-icon green" style="margin: 0 auto 1rem;">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div style="font-size: 2rem; font-weight: bold;">${todayAttendance.filter(a => a.status === 'present').length}</div>
+                            <div style="color: var(--gray);">Presentes</div>
                         </div>
-                        <div class="stat-value">${presencas.filter(p => p.type === 'present').length}</div>
-                        <div class="stat-label">Presentes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon red">
-                            <i class="fas fa-user-times"></i>
+                        <div class="card" style="text-align: center;">
+                            <div class="stat-icon red" style="margin: 0 auto 1rem;">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div style="font-size: 2rem; font-weight: bold;">${todayAttendance.filter(a => a.status === 'absent').length}</div>
+                            <div style="color: var(--gray);">Ausentes</div>
                         </div>
-                        <div class="stat-value">1</div>
-                        <div class="stat-label">Ausentes</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon yellow">
-                            <i class="fas fa-user-clock"></i>
+                        <div class="card" style="text-align: center;">
+                            <div class="stat-icon yellow" style="margin: 0 auto 1rem;">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                            <div style="font-size: 2rem; font-weight: bold;">${todayAttendance.filter(a => a.status === 'late').length}</div>
+                            <div style="color: var(--gray);">Atrasados</div>
                         </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Atrasos</div>
                     </div>
-                </div>
-                
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Funcionário</th>
-                                <th>Data</th>
-                                <th>Entrada</th>
-                                <th>Saída</th>
-                                <th>Total de Horas</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${presencas.map(p => `
-                                <tr>
-                                    <td>${p.employeeName}</td>
-                                    <td>${formatDate(p.date)}</td>
-                                    <td>${p.checkIn || '-'}</td>
-                                    <td>${p.checkOut || '-'}</td>
-                                    <td>${calculateHours(p.checkIn, p.checkOut)}</td>
-                                    <td>
-                                        <span class="status-badge ${p.type === 'present' ? 'active' : 'inactive'}">
-                                            ${p.type === 'present' ? 'Presente' : 'Ausente'}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-secondary" style="padding: 0.5rem;">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-
-        // Usuários
-        function loadUsuarios() {
-            document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Gestão de Usuários</h1>
-                    <button class="btn btn-primary" onclick="openUserModal()">
-                        <i class="fas fa-plus"></i> Novo Usuário
-                    </button>
-                </div>
-                
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>E-mail</th>
-                                <th>Nível de Acesso</th>
-                                <th>Último Acesso</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Administrador</td>
-                                <td>admin@centertel.com</td>
-                                <td>Administrador</td>
-                                <td>22/01/2024 14:30</td>
-                                <td><span class="status-badge active">Ativo</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding: 0.5rem;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>João Silva</td>
-                                <td>joao.silva@centertel.com</td>
-                                <td>Gestor</td>
-                                <td>21/01/2024 18:00</td>
-                                <td><span class="status-badge active">Ativo</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding: 0.5rem;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Maria Santos</td>
-                                <td>maria.santos@centertel.com</td>
-                                <td>Funcionário</td>
-                                <td>20/01/2024 17:30</td>
-                                <td><span class="status-badge active">Ativo</span></td>
-                                <td>
-                                    <button class="btn btn-secondary" style="padding: 0.5rem;">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
                 
                 <div class="card">
-                    <h2 style="margin-bottom: 1.5rem;">Níveis de Acesso</h2>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-label">Administrador</div>
-                            <div class="info-value">Acesso total ao sistema</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Gestor</div>
-                            <div class="info-value">Acesso à sua equipe e aprovações</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Funcionário</div>
-                            <div class="info-value">Acesso aos próprios dados</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Visualizador</div>
-                            <div class="info-value">Apenas visualização de relatórios</div>
-                        </div>
+                    <h3 style="margin-bottom: 1rem;">Registros de Presença</h3>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Funcionário</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                    <th>Status</th>
+                                    <th>Observações</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${dataStore.presencas.map(p => `
+                                    <tr>
+                                        <td>${formatDate(p.date)}</td>
+                                        <td>${p.employeeName}</td>
+                                        <td>${p.checkIn || '-'}</td>
+                                        <td>${p.checkOut || '-'}</td>
+                                        <td>${getAttendanceStatusBadge(p.status)}</td>
+                                        <td>${p.observations || '-'}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteAttendance(${p.id})" style="padding: 0.5rem;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             `;
         }
 
-        // Relatórios
-        function loadRelatorios() {
+        // Backup
+        function loadBackup() {
             document.getElementById('mainContent').innerHTML = `
-                <div class="page-header">
-                    <h1 class="page-title">Relatórios</h1>
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 2rem; font-weight: bold;">Backup & Gerenciamento de Dados</h1>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <div class="card" style="cursor: pointer;" onclick="generateReport('employees')">
-                        <h3 style="margin-bottom: 1rem;">
-                            <i class="fas fa-users"></i> Relatório de Funcionários
-                        </h3>
-                        <p style="color: var(--gray);">Lista completa de funcionários com todos os dados cadastrais</p>
-                        <button class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fas fa-download"></i> Gerar
+                <div class="card">
+                    <h3><i class="fas fa-download"></i> Exportar Dados</h3>
+                    <p style="margin-bottom: 1rem; color: var(--gray);">
+                        Faça o download de todos os seus dados em formato JSON
+                    </p>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" onclick="exportData()">
+                            <i class="fas fa-download"></i> Baixar Backup
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
                         </button>
                     </div>
-                    
-                    <div class="card" style="cursor: pointer;" onclick="generateReport('vales')">
-                        <h3 style="margin-bottom: 1rem;">
-                            <i class="fas fa-ticket-alt"></i> Relatório de Vales
-                        </h3>
-                        <p style="color: var(--gray);">Resumo de vales por funcionário e período</p>
-                        <button class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fas fa-download"></i> Gerar
-                        </button>
-                    </div>
-                    
-                    <div class="card" style="cursor: pointer;" onclick="generateReport('vacation')">
-                        <h3 style="margin-bottom: 1rem;">
-                            <i class="fas fa-umbrella-beach"></i> Mapa de Férias
-                        </h3>
-                        <p style="color: var(--gray);">Visualização anual de férias por departamento</p>
-                        <button class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fas fa-download"></i> Gerar
-                        </button>
-                    </div>
-                    
-                    <div class="card" style="cursor: pointer;" onclick="generateReport('attendance')">
-                        <h3 style="margin-bottom: 1rem;">
-                            <i class="fas fa-clock"></i> Relatório de Frequência
-                        </h3>
-                        <p style="color: var(--gray);">Controle de presenças, faltas e atrasos</p>
-                        <button class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fas fa-download"></i> Gerar
-                        </button>
-                    </div>
-                    
-                    <div class="card" style="cursor: pointer;" onclick="generateReport('payroll')">
-                        <h3 style="margin-bottom: 1rem;">
-                            <i class="fas fa-money-bill-wave"></i> Folha de Pagamento
-                        </h3>
-                        <p style="color: var(--gray);">Resumo da folha com descontos e benefícios</p>
-                        <button class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fas fa-download"></i> Gerar
-                        </button>
-                    </div>
-                    
-                    <div class="card" style="cursor: pointer;" onclick="generateReport('dashboard')">
-                        <h3 style="margin-bottom: 1rem;">
-                            <i class="fas fa-chart-bar"></i> Dashboard Executivo
-                        </h3>
-                        <p style="color: var(--gray);">Indicadores gerenciais e gráficos consolidados</p>
-                        <button class="btn btn-primary" style="margin-top: 1rem;">
-                            <i class="fas fa-download"></i> Gerar
-                        </button>
-                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-upload"></i> Importar Dados</h3>
+                    <p style="margin-bottom: 1rem; color: var(--gray);">
+                        Restaure dados de um backup anterior
+                    </p>
+                    <input type="file" id="importFile" accept=".json" style="margin-bottom: 1rem;" class="form-control">
+                    <button class="btn btn-success" onclick="importData()">
+                        <i class="fas fa-upload"></i> Importar Backup
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-trash"></i> Limpar Dados</h3>
+                    <p style="margin-bottom: 1rem; color: var(--gray);">
+                        Remova todos os dados do sistema (ação irreversível)
+                    </p>
+                    <button class="btn btn-danger" onclick="clearAllData()">
+                        <i class="fas fa-trash"></i> Limpar Todos os Dados
+                    </button>
+                </div>
+                
+                <div class="card" style="background: linear-gradient(135deg, #f3f4f6, #e5e7eb);">
+                    <h3><i class="fas fa-info-circle"></i> Informações de Armazenamento</h3>
+                    <p>Os dados são salvos localmente no seu navegador usando LocalStorage.</p>
+                    <p>Capacidade: ~10MB | Usado: ${getStorageSize()}</p>
                 </div>
             `;
         }
 
-        // Modal Functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
+        // Tab switching
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
@@ -1899,75 +1693,71 @@
             document.getElementById(tabName).classList.add('active');
         }
 
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
         // Employee Functions
         function saveEmployee() {
             const employee = {
-                id: employees.length + 1,
                 name: document.getElementById('empName').value,
+                matricula: document.getElementById('empMatricula').value,
                 cpf: document.getElementById('empCPF').value,
-                rg: document.getElementById('empRG').value,
                 birthDate: document.getElementById('empBirthDate').value,
                 email: document.getElementById('empEmail').value,
                 phone: document.getElementById('empPhone').value,
                 position: document.getElementById('empPosition').value,
                 department: document.getElementById('empDepartment').value,
+                equipe: document.getElementById('empEquipe').value,
+                empresa: document.getElementById('empEmpresa').value,
                 admissionDate: document.getElementById('empAdmissionDate').value,
-                salary: parseFloat(document.getElementById('empSalary').value.replace(/[^\d,]/g, '').replace(',', '.')),
+                salary: parseFloat(document.getElementById('empSalary').value.replace(/[^\d,]/g, '').replace(',', '.')) || 0,
                 contractType: document.getElementById('empContractType').value,
-                status: 'active'
+                status: document.getElementById('empStatus').value
             };
             
-            employees.push(employee);
-            closeModal('employeeModal');
-            loadFuncionarios();
-            showToast('Funcionário cadastrado com sucesso!', 'success');
-        }
-
-        function viewEmployee(id) {
-            const employee = employees.find(emp => emp.id === id);
-            if (employee) {
-                alert(`Visualizando dados de ${employee.name}`);
+            if (!employee.name || !employee.matricula || !employee.position || !employee.equipe || !employee.empresa || !employee.admissionDate) {
+                showToast('Preencha todos os campos obrigatórios!', 'error');
+                return;
             }
-        }
-
-        function editEmployee(id) {
-            const employee = employees.find(emp => emp.id === id);
-            if (employee) {
-                openModal('employeeModal');
-                document.getElementById('empName').value = employee.name;
-                document.getElementById('empCPF').value = employee.cpf;
-                document.getElementById('empEmail').value = employee.email;
-                document.getElementById('empPosition').value = employee.position;
-                document.getElementById('empDepartment').value = employee.department;
-            }
-        }
-
-        function searchEmployees(query) {
-            const filteredEmployees = employees.filter(emp => 
-                emp.name.toLowerCase().includes(query.toLowerCase()) ||
-                emp.cpf.includes(query) ||
-                emp.position.toLowerCase().includes(query.toLowerCase())
-            );
             
-            const tbody = document.getElementById('employeesTableBody');
-            tbody.innerHTML = filteredEmployees.map(emp => `
-                <tr>
-                    <td>${emp.name}</td>
-                    <td>${emp.cpf}</td>
-                    <td>${emp.position}</td>
-                    <td>${emp.department}</td>
-                    <td>${formatDate(emp.admissionDate)}</td>
-                    <td><span class="status-badge ${emp.status}">${emp.status === 'active' ? 'Ativo' : 'Inativo'}</span></td>
-                    <td>
-                        <button class="btn btn-secondary" style="padding: 0.5rem;" onclick="viewEmployee(${emp.id})">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-secondary" style="padding: 0.5rem;" onclick="editEmployee(${emp.id})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+            if (dataStore.addEmployee(employee)) {
+                closeModal('employeeModal');
+                loadFuncionarios();
+                showToast('Funcionário cadastrado com sucesso!', 'success');
+                clearEmployeeForm();
+            }
+        }
+
+        function deleteEmployee(id) {
+            if (confirm('Tem certeza que deseja excluir este funcionário?')) {
+                if (dataStore.deleteEmployee(id)) {
+                    loadFuncionarios();
+                    showToast('Funcionário excluído', 'success');
+                }
+            }
+        }
+
+        function clearEmployeeForm() {
+            document.getElementById('empName').value = '';
+            document.getElementById('empMatricula').value = '';
+            document.getElementById('empCPF').value = '';
+            document.getElementById('empBirthDate').value = '';
+            document.getElementById('empEmail').value = '';
+            document.getElementById('empPhone').value = '';
+            document.getElementById('empPosition').value = '';
+            document.getElementById('empDepartment').value = '';
+            document.getElementById('empEquipe').value = '';
+            document.getElementById('empEmpresa').value = '';
+            document.getElementById('empAdmissionDate').value = '';
+            document.getElementById('empSalary').value = '';
+            document.getElementById('empContractType').value = 'CLT';
+            document.getElementById('empStatus').value = 'active';
         }
 
         // Vale Functions
@@ -1975,59 +1765,283 @@
             openModal('valeModal');
             const select = document.getElementById('valeEmployee');
             select.innerHTML = '<option value="">Selecione o funcionário...</option>' + 
-                employees.map(emp => `<option value="${emp.id}">${emp.name}</option>`).join('');
+                dataStore.employees.map(emp => `<option value="${emp.id}">${emp.name} - ${emp.matricula}</option>`).join('');
+            
+            // Set current month
+            document.getElementById('valeMonth').value = new Date().toISOString().slice(0, 7);
         }
 
         function saveVale() {
             const employeeId = parseInt(document.getElementById('valeEmployee').value);
-            const employee = employees.find(emp => emp.id === employeeId);
+            const employee = dataStore.employees.find(emp => emp.id === employeeId);
+            
+            if (!employee) {
+                showToast('Selecione um funcionário', 'error');
+                return;
+            }
             
             const vale = {
-                id: vales.length + 1,
                 employeeId: employeeId,
                 employeeName: employee.name,
                 type: document.getElementById('valeType').value,
-                amount: parseFloat(document.getElementById('valeAmount').value.replace(/[^\d,]/g, '').replace(',', '.')),
+                amount: parseFloat(document.getElementById('valeAmount').value.replace(/[^\d,]/g, '').replace(',', '.')) || 0,
                 month: document.getElementById('valeMonth').value,
-                status: 'pending',
                 observations: document.getElementById('valeObservations').value
             };
             
-            vales.push(vale);
-            closeModal('valeModal');
-            loadVales();
-            showToast('Vale lançado com sucesso!', 'success');
-        }
-
-        function approveVale(id) {
-            const vale = vales.find(v => v.id === id);
-            if (vale) {
-                vale.status = 'approved';
+            if (vale.amount <= 0) {
+                showToast('Informe um valor válido', 'error');
+                return;
+            }
+            
+            if (dataStore.addVale(vale)) {
+                closeModal('valeModal');
                 loadVales();
-                showToast('Vale aprovado!', 'success');
+                showToast('Vale cadastrado com sucesso!', 'success');
+                clearValeForm();
             }
         }
 
-        function rejectVale(id) {
-            const vale = vales.find(v => v.id === id);
-            if (vale) {
-                vale.status = 'rejected';
-                loadVales();
-                showToast('Vale rejeitado!', 'error');
+        function deleteVale(id) {
+            if (confirm('Tem certeza que deseja remover este vale?')) {
+                if (dataStore.deleteVale(id)) {
+                    loadVales();
+                    showToast('Vale removido', 'success');
+                }
             }
         }
 
-        function filterValesByMonth(month) {
-            console.log('Filtering vales by month:', month);
-            // Implement month filtering
+        function clearValeForm() {
+            document.getElementById('valeEmployee').value = '';
+            document.getElementById('valeType').value = 'Transporte';
+            document.getElementById('valeAmount').value = '';
+            document.getElementById('valeMonth').value = new Date().toISOString().slice(0, 7);
+            document.getElementById('valeObservations').value = '';
         }
 
-        // Report Functions
-        function generateReport(type) {
-            showToast(`Gerando relatório de ${type}...`, 'success');
-            setTimeout(() => {
-                showToast('Relatório gerado com sucesso! Download iniciado.', 'success');
-            }, 2000);
+        // Attendance Functions
+        function openAttendanceModal() {
+            openModal('attendanceModal');
+            const select = document.getElementById('attendanceEmployee');
+            select.innerHTML = '<option value="">Selecione o funcionário...</option>' + 
+                dataStore.employees.map(emp => `<option value="${emp.id}">${emp.name} - ${emp.matricula}</option>`).join('');
+        }
+
+        function saveAttendance() {
+            const employeeId = parseInt(document.getElementById('attendanceEmployee').value);
+            const employee = dataStore.employees.find(emp => emp.id === employeeId);
+            
+            if (!employee) {
+                showToast('Selecione um funcionário', 'error');
+                return;
+            }
+            
+            const attendance = {
+                employeeId: employeeId,
+                employeeName: employee.name,
+                date: document.getElementById('attendanceDate').value,
+                checkIn: document.getElementById('attendanceCheckIn').value,
+                checkOut: document.getElementById('attendanceCheckOut').value,
+                status: document.getElementById('attendanceStatus').value,
+                observations: document.getElementById('attendanceObservations').value
+            };
+            
+            if (dataStore.addAttendance(attendance)) {
+                closeModal('attendanceModal');
+                loadPresencas();
+                showToast('Presença registrada com sucesso!', 'success');
+                clearAttendanceForm();
+            }
+        }
+
+        function deleteAttendance(id) {
+            if (confirm('Tem certeza que deseja excluir este registro?')) {
+                dataStore.presencas = dataStore.presencas.filter(p => p.id !== id);
+                dataStore.saveData();
+                loadPresencas();
+                showToast('Registro excluído', 'success');
+            }
+        }
+
+        function clearAttendanceForm() {
+            document.getElementById('attendanceEmployee').value = '';
+            document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('attendanceCheckIn').value = '';
+            document.getElementById('attendanceCheckOut').value = '';
+            document.getElementById('attendanceStatus').value = 'present';
+            document.getElementById('attendanceObservations').value = '';
+        }
+
+        // Helper Functions
+        function getExperienceAlerts() {
+            const today = new Date();
+            const alerts = [];
+            
+            dataStore.employees.forEach(emp => {
+                if (emp.status === 'experiencia' && emp.admissionDate) {
+                    const admission = new Date(emp.admissionDate);
+                    const daysSinceAdmission = Math.floor((today - admission) / (1000 * 60 * 60 * 24));
+                    
+                    if (daysSinceAdmission >= 40 && daysSinceAdmission <= 45) {
+                        alerts.push({
+                            employee: emp,
+                            days: daysSinceAdmission,
+                            message: `Próximo dos 45 dias de experiência (${45 - daysSinceAdmission} dias restantes)`
+                        });
+                    } else if (daysSinceAdmission >= 85 && daysSinceAdmission <= 90) {
+                        alerts.push({
+                            employee: emp,
+                            days: daysSinceAdmission,
+                            message: `ATENÇÃO: Próximo dos 90 dias de experiência (${90 - daysSinceAdmission} dias restantes)`
+                        });
+                    } else if (daysSinceAdmission > 90) {
+                        alerts.push({
+                            employee: emp,
+                            days: daysSinceAdmission,
+                            message: `VENCIDO: Experiência de 90 dias ultrapassada!`
+                        });
+                    }
+                }
+            });
+            
+            return alerts.sort((a, b) => b.days - a.days);
+        }
+
+        function getVacationAlerts() {
+            const today = new Date();
+            const alerts = [];
+            
+            dataStore.employees.forEach(emp => {
+                if (emp.admissionDate && emp.department === 'Vendas') {
+                    const admission = new Date(emp.admissionDate);
+                    const monthsSinceAdmission = Math.floor((today - admission) / (1000 * 60 * 60 * 24 * 30));
+                    
+                    if (monthsSinceAdmission >= 11) {
+                        alerts.push({
+                            employee: emp,
+                            monthsWorked: monthsSinceAdmission,
+                            message: monthsSinceAdmission >= 12 
+                                ? `Completou 12 meses - Período de férias disponível`
+                                : `Próximo de completar 12 meses (${12 - monthsSinceAdmission} mês restante)`
+                        });
+                    }
+                }
+            });
+            
+            return alerts;
+        }
+
+        function getDaysWorked(admissionDate) {
+            if (!admissionDate) return 0;
+            const today = new Date();
+            const admission = new Date(admissionDate);
+            return Math.floor((today - admission) / (1000 * 60 * 60 * 24));
+        }
+
+        function getMonthsWorked(admissionDate) {
+            if (!admissionDate) return 0;
+            const today = new Date();
+            const admission = new Date(admissionDate);
+            return Math.floor((today - admission) / (1000 * 60 * 60 * 24 * 30));
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'active': '<span class="status-badge active">Ativo</span>',
+                'experiencia': '<span class="status-badge warning">Em Experiência</span>',
+                'ferias': '<span class="status-badge">Férias</span>',
+                'afastado': '<span class="status-badge danger">Afastado</span>',
+                'inactive': '<span class="status-badge danger">Inativo</span>'
+            };
+            return badges[status] || '<span class="status-badge">-</span>';
+        }
+
+        function getAttendanceStatusBadge(status) {
+            const badges = {
+                'present': '<span class="status-badge active">Presente</span>',
+                'absent': '<span class="status-badge danger">Ausente</span>',
+                'late': '<span class="status-badge warning">Atrasado</span>',
+                'justified': '<span class="status-badge">Falta Justificada</span>',
+                'holiday': '<span class="status-badge">Feriado</span>'
+            };
+            return badges[status] || '<span class="status-badge">-</span>';
+        }
+
+        function getTeamSummary() {
+            const teams = {};
+            dataStore.employees.forEach(emp => {
+                if (emp.equipe) {
+                    if (!teams[emp.equipe]) {
+                        teams[emp.equipe] = 0;
+                    }
+                    teams[emp.equipe]++;
+                }
+            });
+            
+            return Object.entries(teams).map(([team, count]) => `
+                <div class="employee-card">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">${team}</h4>
+                    <div style="font-size: 1.5rem; font-weight: bold;">${count}</div>
+                    <div style="color: var(--gray); font-size: 0.875rem;">funcionário(s)</div>
+                </div>
+            `).join('');
+        }
+
+        // Export/Import Functions
+        function exportData() {
+            const data = dataStore.exportData();
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `centertel-rh-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Backup baixado com sucesso!', 'success');
+        }
+
+        function exportToExcel() {
+            let csv = 'Matrícula,Nome,CPF,Email,Telefone,Cargo,Departamento,Equipe,Empresa,Admissão,Status\n';
+            dataStore.employees.forEach(emp => {
+                csv += `"${emp.matricula}","${emp.name}","${emp.cpf || ''}","${emp.email || ''}","${emp.phone || ''}","${emp.position || ''}","${emp.department || ''}","${emp.equipe || ''}","${emp.empresa || ''}","${emp.admissionDate || ''}","${emp.status || ''}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `funcionarios-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Arquivo Excel/CSV gerado!', 'success');
+        }
+
+        function importData() {
+            const fileInput = document.getElementById('importFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showToast('Selecione um arquivo', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (dataStore.importData(e.target.result)) {
+                    loadDashboard();
+                    showToast('Dados importados com sucesso!', 'success');
+                } else {
+                    showToast('Erro ao importar dados', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (dataStore.clearAllData()) {
+                loadDashboard();
+                showToast('Todos os dados foram removidos', 'success');
+            }
         }
 
         // Utility Functions
@@ -2042,81 +2056,32 @@
             return `${months[parseInt(month) - 1]}/${year}`;
         }
 
-        function calculateHours(checkIn, checkOut) {
-            if (!checkIn || !checkOut) return '-';
-            const [inHour, inMin] = checkIn.split(':').map(Number);
-            const [outHour, outMin] = checkOut.split(':').map(Number);
-            const totalMinutes = (outHour * 60 + outMin) - (inHour * 60 + inMin);
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
-            return `${hours}h${minutes > 0 ? minutes + 'min' : ''}`;
-        }
-
-        function generateCalendar() {
-            const days = [];
-            const daysInMonth = 31;
-            const firstDay = 1; // Monday
-            
-            // Add empty cells for days before month starts
-            for (let i = 0; i < firstDay; i++) {
-                days.push('<div class="calendar-day"></div>');
-            }
-            
-            // Add days of the month
-            for (let day = 1; day <= daysInMonth; day++) {
-                const hasEvent = day >= 1 && day <= 20; // Example: vacation from 1-20
-                days.push(`<div class="calendar-day ${hasEvent ? 'has-event' : ''}">${day}</div>`);
-            }
-            
-            return days.join('');
+        function getStorageSize() {
+            const data = localStorage.getItem('centertelRHData') || '';
+            const sizeInBytes = new Blob([data]).size;
+            const sizeInKB = (sizeInBytes / 1024).toFixed(2);
+            return `${sizeInKB} KB`;
         }
 
         function showToast(message, type = 'success') {
-            let toastContainer = document.getElementById('toastContainer');
-            
-            // Create toast container if it doesn't exist
-            if (!toastContainer) {
-                toastContainer = document.createElement('div');
-                toastContainer.className = 'toast-container';
-                toastContainer.id = 'toastContainer';
-                document.body.appendChild(toastContainer);
-            }
-            
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle'}"></i>
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
                 <span>${message}</span>
             `;
             
-            toastContainer.appendChild(toast);
+            document.getElementById('toastContainer').appendChild(toast);
             
             setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease forwards';
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // Initialize app
-        console.log('Portal CENTERTEL RH carregado');
-        console.log('Botão de acesso rápido deve estar visível abaixo do formulário de login');
-        console.log('Se não conseguir entrar, digite no console: quickLogin()');
-        console.log('Ou pressione a tecla "D" para Demo');
-        
-        // Make quickLogin available globally
+        // Initialize
         window.quickLogin = quickLogin;
-        
-        // Add keyboard shortcut for quick login
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'd' || e.key === 'D') {
-                if (document.getElementById('loginScreen').style.display !== 'none') {
-                    quickLogin();
-                }
-            }
-        });
-        
-        // DESCOMENTAR A LINHA ABAIXO PARA LOGIN AUTOMÁTICO APÓS 3 SEGUNDOS
-        // setTimeout(quickLogin, 3000);
+        console.log('Portal CENTERTEL RH 2.0 carregado com sucesso!');
     </script>
 </body>
 </html>
